@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Description</key>
+    <string>Downloads the latest version of Affinity Publisher.</string>
+    <key>Identifier</key>
+    <string>com.github.faumac.download.AffinityPublisher</string>
+    <key>Input</key>
+    <dict>
+      <key>NAME</key>
+      <string>Affinity Publisher</string>
+    </dict>
+    <key>MinimumVersion</key>
+    <string>1.0.1</string>
+    <key>Process</key>
+    <array>
+      <dict>
+        <key>Processor</key>
+        <string>SparkleUpdateInfoProvider</string>
+        <key>Arguments</key>
+        <dict>
+          <key>appcast_url</key>
+          <string>https://s3-eu-west-1.amazonaws.com/affinity-update/mac/retail/publisher.xml</string>
+        </dict>
+      </dict>
+      <dict>
+        <key>Processor</key>
+        <string>URLDownloader</string>
+      </dict>
+      <dict>
+        <key>Processor</key>
+        <string>Unarchiver</string>
+        <key>Arguments</key>
+        <dict>
+          <key>archive_path</key>
+          <string>%pathname%</string>
+          <key>destination_path</key>
+          <string>%RECIPE_CACHE_DIR%/downloads</string>
+        </dict>
+      </dict>
+      <dict>
+        <key>Processor</key>
+        <string>EndOfCheckPhase</string>
+      </dict>
+      <dict>
+     <key>Processor</key>
+     <string>CodeSignatureVerifier</string>
+        <key>Arguments</key>
+        <dict>
+          <key>input_path</key>
+          <string>%RECIPE_CACHE_DIR%/downloads/%NAME%.app</string>
+          <key>requirement</key>
+          <string>(anchor apple generic and certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "6LVTQB9699") and identifier "com.seriflabs.affinitypublisher"
+          </string>
+         </dict>
+      </dict>
+    </array>
+  </dict>
+</plist>
