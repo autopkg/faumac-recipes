@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Description</key>
+    <string>Downloads the current release version of Affintiy Photo and builds a package.</string>
+    <key>Identifier</key>
+    <string>com.github.faumac.pkg.AffinityPhoto</string>
+    <key>Input</key>
+    <dict>
+        <key>NAME</key>
+        <string>Affinity Photo</string>
+        <key>LICENSE_KEY</key>
+        <string></string>
+        <key>REGISTRATION_EMAIL</key>
+        <string></string>
+    </dict>
+    <key>ParentRecipe</key>
+    <string>com.github.faumac.download.AffinityPhoto</string>
+    <key>MinimumVersion</key>
+    <string>1.0.1</string>
+    <key>Process</key>
+    <array>
+        <dict>
+            <key>Processor</key>
+            <string>PlistReader</string>
+            <key>Arguments</key>
+            <dict>
+                <key>info_path</key>
+                <string>%RECIPE_CACHE_DIR%/downloads/%NAME%.app/Contents/Info.plist</string>
+                <key>plist_keys</key>
+                <dict>
+                    <key>CFBundleIdentifier</key>
+                    <string>pkg_id</string>
+                </dict>
+            </dict>
+        </dict>
+        <dict>
+            <key>Processor</key>
+            <string>PkgRootCreator</string>
+            <key>Arguments</key>
+            <dict>
+                <key>pkgdirs</key>
+                <dict/>
+                <key>pkgroot</key>
+                <string>%RECIPE_CACHE_DIR%/scripts</string>
+            </dict>
+        </dict>
+        <dict>
+            <key>Processor</key>
+            <string>PkgRootCreator</string>
+            <key>Arguments</key>
+            <dict>
+                <key>pkgroot</key>
+                <string>%RECIPE_CACHE_DIR%/pkgroot</string>
+                <key>pkgdirs</key>
+                <dict>
+                    <key>Applications</key>
+                    <string>0775</string>
+                </dict>
+            </dict>
+        </dict>
+        <dict>
+            <key>Processor</key>
+            <string>FileCreator</string>
+            <key>Arguments</key>
+            <dict>
+                <key>file_content</key>
+                <string>#!/bin/bash
+####################################
+## Activate Affinity Photo 
+####################################
+
+# Set variables
+## Get current user
+currentUser=$(/usr/bin/stat -f%Su /dev/console)
+## License file
+licenseFile="/Users/$currentUser/Library/Application Support/Affinity Photo/licence.xml"
+## License key
+licenseKey="%LICENSE_KEY%"
+## Registration email
+registrationEmail="%REGISTRATION_EMAIL%"
+
+
+# Check if the application support folder and Affinity Photo licence file exists - if not create it
+if [[ ! -e "$licenseFile" ]]; then
+    sudo -u $currentUser mkdir -p "/Users/$currentUser/Library/Application Support/Affinity Photo"
+    sudo -u $currentUser touch "$licenseFile"
+
+    # Create license file
+    if [[ -f "$licenseFile" ]]; then
+        cat &gt;"$licenseFile" &lt;&lt;EOF
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;Licence xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+&lt;Key&gt;$licenseKey&lt;/Key&gt;
+&lt;Email&gt;$registrationEmail&lt;/Email&gt;
+&lt;/Licence&gt;
+EOF
+    fi
+fi
+
+exit 0</string>
+                <key>file_mode</key>
+                <string>0755</string>
+                <key>file_path</key>
+                <string>%RECIPE_CACHE_DIR%/scripts/postinstall</string>
+            </dict>
+        </dict>
+        <dict>
+            <key>Processor</key>
+            <string>Copier</string>
+            <key>Arguments</key>
+            <dict>
+                <key>source_path</key>
+                <string>%RECIPE_CACHE_DIR%/downloads/%NAME%.app</string>
+                <key>destination_path</key>
+                <string>%pkgroot%/Applications/%NAME%.app</string>
+            </dict>
+        </dict>
+        <dict>
+            <key>Processor</key>
+            <string>PkgCreator</string>
+            <key>Arguments</key>
+            <dict>
+                <key>pkg_request</key>
+                <dict>
+                    <key>pkgname</key>
+                    <string>%NAME%-%version%</string>
+                    <key>id</key>
+                    <string>%pkg_id%</string>
+                    <key>version</key>
+                    <string>%version%</string>
+                    <key>scripts</key>
+                    <string>%RECIPE_CACHE_DIR%/scripts</string>
+                    <key>options</key>
+                    <string>purge_ds_store</string>
+                    <key>chown</key>
+                    <array>
+                        <dict>
+                            <key>path</key>
+                            <string>Applications</string>
+                            <key>user</key>
+                            <string>root</string>
+                            <key>group</key>
+                            <string>admin</string>
+                        </dict>
+                    </array>
+                </dict>
+            </dict>
+        </dict>
+    </array>
+</dict>
+</plist>
