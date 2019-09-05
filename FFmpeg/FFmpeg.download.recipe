@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Description</key>
+	<string>Downloads the current version of FFmpeg.</string>
+	<key>Identifier</key>
+	<string>com.github.faumac.download.FFmpeg</string>
+	<key>Input</key>
+	<dict>
+		<key>NAME</key>
+		<string>FFmpeg</string>
+	</dict>
+	<key>MinimumVersion</key>
+	<string>1.0.4</string>
+    <key>Process</key>
+    <array>
+        <dict>
+            <key>Processor</key>
+            <string>URLTextSearcher</string>
+            <key>Arguments</key>
+            <dict>
+                <key>url</key>
+                <string>https://evermeet.cx/ffmpeg/rss.xml</string>
+                <key>re_pattern</key>
+                <string>https://evermeet.cx/ffmpeg/ffmpeg-([\d.]+).dmg</string>
+                <key>comment</key>
+                <string>Example: https://evermeet.cx/ffmpeg/ffmpeg-4.0.dmg</string>
+            </dict>
+        </dict>
+        <dict>
+            <key>Processor</key>
+            <string>URLDownloader</string>
+            <key>Arguments</key>
+            <dict>
+                <key>url</key>
+                <string>https://evermeet.cx/ffmpeg/ffmpeg-%match%.dmg</string>
+            </dict>
+        </dict>
+        <dict>
+            <key>Processor</key>
+            <string>FFmpegVersioner</string>
+        </dict>
+        <dict>
+            <key>Processor</key>
+            <string>EndOfCheckPhase</string>
+        </dict>
+    </array>
+</dict>
+</plist>
