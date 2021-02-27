@@ -5,7 +5,7 @@
 	<key>Description</key>
 	<string>Downloads the current release version of Sourcetree.</string>
 	<key>Identifier</key>
-	<string>de.fau.rrze.download.Sourcetree</string>
+	<string>com.github.faumac.download.Sourcetree</string>
 	<key>Input</key>
 	<dict>
 		<key>NAME</key>
@@ -22,16 +22,11 @@
 			<dict>
 				<key>appcast_url</key>
 				<string>https://product-downloads.atlassian.com/software/sourcetree/Appcast/SparkleAppcastGroup0.xml</string>
-				</array>
 			</dict>
 		</dict>
 		<dict>
 			<key>Processor</key>
 			<string>URLDownloader</string>
-		</dict>
-		<dict>
-			<key>Processor</key>
-			<string>EndOfCheckPhase</string>
 		</dict>
 		<dict>
 			<key>Processor</key>
@@ -48,13 +43,17 @@
 		</dict>
 		<dict>
 			<key>Processor</key>
+			<string>EndOfCheckPhase</string>
+		</dict>
+		<dict>
+			<key>Processor</key>
 			<string>CodeSignatureVerifier</string>
 			<key>Arguments</key>
 			<dict>
 				<key>input_path</key>
-				<string>%RECIPE_CACHE_DIR%/%NAME%/Sourcetree.app</string>
+				<string>%RECIPE_CACHE_DIR%/%NAME%/%NAME%.app</string>
 				<key>requirement</key>
-				<string>anchor apple generic and identifier "com.torusknot.SourcetreeNotMAS" and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = UPXU4CQZ5P)</string>
+				<string>anchor apple generic and identifier "com.torusknot.SourceTreeNotMAS" and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = UPXU4CQZ5P)</string>
 				<key>strict_verification</key>
 				<true />
 			</dict>
