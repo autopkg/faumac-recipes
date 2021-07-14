@@ -21,25 +21,16 @@
             <key>Arguments</key>
             <dict>
                 <key>url</key>
-                <string>https://evermeet.cx/ffmpeg/rss.xml</string>
+                <string>https://evermeet.cx/ffmpeg/info</string>
                 <key>re_pattern</key>
-                <string>https://evermeet.cx/ffmpeg/ffmpeg-([\d.]+).dmg</string>
-                <key>comment</key>
-                <string>Example: https://evermeet.cx/ffmpeg/ffmpeg-4.0.dmg</string>
+                <string>{\"name\":\"ffmpeg\",\"type\":\"release\",.*\"zip\":{\"url\":\"(https://evermeet\.cx/ffmpeg/ffmpeg-4.4.zip)\"</string>
+                <key>result_output_var_name</key>
+                <string>url</string>
             </dict>
         </dict>
         <dict>
             <key>Processor</key>
             <string>URLDownloader</string>
-            <key>Arguments</key>
-            <dict>
-                <key>url</key>
-                <string>https://evermeet.cx/ffmpeg/ffmpeg-%match%.dmg</string>
-            </dict>
-        </dict>
-        <dict>
-            <key>Processor</key>
-            <string>FFmpegVersioner</string>
         </dict>
         <dict>
             <key>Processor</key>
