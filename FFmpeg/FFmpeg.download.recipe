@@ -21,9 +21,9 @@
             <key>Arguments</key>
             <dict>
                 <key>url</key>
-                <string>https://evermeet.cx/ffmpeg/info</string>
+                <string>https://evermeet.cx/ffmpeg/info/ffmpeg/release</string>
                 <key>re_pattern</key>
-                <string>{\"name\":\"ffmpeg\",\"type\":\"release\",.*\"zip\":{\"url\":\"(https://evermeet\.cx/ffmpeg/ffmpeg-4.4.zip)\"</string>
+                <string>\"zip\":{\"url\":\"(https://evermeet\.cx/ffmpeg/ffmpeg-.*\.zip)\"</string>
                 <key>result_output_var_name</key>
                 <string>url</string>
             </dict>
