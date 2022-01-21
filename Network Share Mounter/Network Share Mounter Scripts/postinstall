@@ -1,0 +1,25 @@
+#!/bin/bash
+####################################
+## Network Share Mounter- Postinstall script
+
+currentUser=$(/usr/bin/stat -f%Su /dev/console)
+legacynetworkShareMounterAgent="/Library/LaunchAgents/de.uni-erlangen.rrze.networkShareMounter.plist"
+legacynetworkShareMounterBin="/Library/Application Support/FAUmac/bin/networkShareMounter"
+
+sudo -u $currentUser open -a /Applications/Network\ Share\ Mounter.app
+#osascript -e 'tell application "Network Share Mounter" to activate' 
+
+# remove the legacy networkShareMounter 
+echo "Remove networkShareMounter Legacy"
+echo "try to unload legacy networkShareMounter LaunchAgent"
+sudo -u $currentUser launchctl unload -w /Library/LaunchAgents/de.uni-erlangen.rrze.networkShareMounter.plist 2>/dev/null 
+
+if [ -f $legacynetworkShareMounterAgent ]; then
+	echo "Remove legacy networkShareMounter LaunchAgent"
+	rm -fv $legacynetworkShareMounterAgent
+fi
+
+if [ -f "$legacynetworkShareMounterBin" ]; then
+	echo "Remove legacy networkShareMounter binary"
+	rm -rfv "$legacynetworkShareMounterBin"
+fi

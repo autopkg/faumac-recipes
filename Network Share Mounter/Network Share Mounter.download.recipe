@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>Identifier</key>
+        <string>de.fau.rrze.download.networkShareMounter</string>
+        <key>Input</key>
+        <dict>
+            <key>NAME</key>
+            <string>Network Share Mounter</string>
+            <key>APP_NAME</key>
+            <string>%NAME%.app</string>
+            <key>RELEASE_CHANNEL</key>
+            <string>release</string> <!-- release or beta -->
+        </dict>
+        <key>MinimumVersion</key>
+        <string>0.4.1</string>
+        <key>Process</key>
+        <array>
+    	<dict>
+        	<key>Processor</key>
+            <string>URLTextSearcher</string>
+            <key>Arguments</key>
+            <dict>
+                <key>url</key>
+                <string>https://gitlab.rrze.fau.de/api/v4/projects/506/releases</string>
+                <key>re_pattern</key>
+                <string>%RELEASE_CHANNEL%-((\d(\.)*)+([a-z|0-9]+){0,})</string>
+                <key>result_output_var_name</key>
+                <string>match</string>
+            </dict>
+        </dict>
+        <dict>
+            <key>Processor</key>
+            <string>URLTextSearcher</string>
+            <key>Arguments</key>
+            <dict>
+                <key>url</key>
+                <string>https://gitlab.rrze.fau.de/api/v4/projects/506/releases</string>
+                <key>re_pattern</key>
+                <string>%match%/NetworkShareMounter((([a-z]|[A-Z])+){0,}).dmg</string>
+                <key>result_output_var_name</key>
+                <string>match2</string>
+            </dict>
+        </dict>
+    	<dict>
+            <key>Processor</key>
+            <string>URLDownloader</string>
+            <key>Arguments</key>
+            <dict>
+                <key>url</key>
+                <string>https://gitlab.rrze.fau.de/api/v4/projects/506/packages/generic/networksharemounter/%RELEASE_CHANNEL%-%match%/NetworkShareMounter%match2%.dmg</string>
+            </dict>
+        </dict>
+        <dict>
+            <key>Processor</key>
+            <string>EndOfCheckPhase</string>
+        </dict>
+        <dict>
+            <key>Processor</key>
+            <string>CodeSignatureVerifier</string>
+            <key>Arguments</key>
+            <dict>
+              <key>input_path</key>
+              <string>%pathname%/%APP_NAME%</string>
+              <key>requirement</key>
+              <string>anchor apple generic and identifier "de.fau.rrze.NetworkShareMounter" and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = C8F68RFW4L)</string>
+            </dict>
+        </dict>
+        </array>
+    </dict>
+</plist>

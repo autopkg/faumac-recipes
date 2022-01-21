@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Description</key>
+    <string>Create a package from the Network Share Mounter download</string>
+    <key>Identifier</key>
+    <string>de.fau.rrze.pkg.networkShareMounter</string>
+    <key>Input</key>
+    <dict>
+        <key>NAME</key>
+        <string>Network Share Mounter</string>
+        <key>APP_NAME</key>
+        <string>%NAME%.app</string>
+        <key>RELEASE_CHANNEL</key>
+        <string>release</string> <!-- release or beta -->
+    </dict>
+    <key>MinimumVersion</key>
+    <string>1.0.0</string>
+    <key>ParentRecipe</key>
+    <string>de.fau.rrze.download.networkShareMounter</string>
+    <key>Process</key>
+    <array>
+        <dict>
+            <key>Arguments</key>
+            <dict>
+                <key>dmg_path</key>
+                <string>%pathname%</string>
+            </dict>
+            <key>Processor</key>
+            <string>AppDmgVersioner</string>
+        </dict>
+        <dict>
+            <key>Arguments</key>
+            <dict>
+                <key>pkgdirs</key>
+                <dict>
+                    <key>Applications</key>
+                    <string>0775</string>
+                </dict>
+                <key>pkgroot</key>
+                <string>%RECIPE_CACHE_DIR%/%NAME%</string>
+            </dict>
+            <key>Processor</key>
+            <string>PkgRootCreator</string>
+        </dict>
+        <dict>
+            <key>Arguments</key>
+            <dict>
+                <key>destination_path</key>
+                <string>%pkgroot%/Applications/%app_name%</string>
+                <key>source_path</key>
+                <string>%pathname%/%app_name%</string>
+            </dict>
+            <key>Processor</key>
+            <string>Copier</string>
+        </dict>
+        <dict>
+            <key>Arguments</key>
+            <dict>
+                <key>pkg_request</key>
+                <dict>
+                    <key>pkgname</key>
+                    <string>%NAME%-%version%</string>
+                    <key>id</key>
+                    <string>de.fau.rrze.networkShareMounter</string>
+                    <key>version</key>
+                    <string>%version%</string>
+                    <key>scripts</key>
+                    <string>Network Share Mounter Scripts</string>
+                    <key>options</key>
+                    <string>purge_ds_store</string>
+                    <key>chown</key>
+                    <array>
+                        <dict>
+                            <key>path</key>
+                            <string>Applications</string>
+                            <key>user</key>
+                            <string>root</string>
+                            <key>group</key>
+                            <string>admin</string>
+                        </dict>
+                    </array>
+                </dict>
+            </dict>
+            <key>Processor</key>
+            <string>PkgCreator</string>
+        </dict>
+    </array>
+</dict>
+</plist>
