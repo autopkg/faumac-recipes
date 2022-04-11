@@ -23,7 +23,7 @@
 			<key>Arguments</key>
 			<dict>
 				<key>asset_regex</key>
-				<string>%NAME%-[\S]+\.dmg</string>
+				<string>.*\d+\.\d+\.\d+\.dmg$</string>
 				<key>github_repo</key>
 				<string>meetfranz/franz</string>
 				<key>include_prereleases</key>
