@@ -17,8 +17,8 @@
         <string>0.4.1</string>
         <key>Process</key>
         <array>
-    	<dict>
-        	<key>Processor</key>
+        <dict>
+            <key>Processor</key>
             <string>URLTextSearcher</string>
             <key>Arguments</key>
             <dict>
@@ -38,18 +38,18 @@
                 <key>url</key>
                 <string>https://gitlab.rrze.fau.de/api/v4/projects/506/releases</string>
                 <key>re_pattern</key>
-                <string>%match%/NetworkShareMounter((([a-z]|[A-Z])+){0,}).dmg</string>
+                <string>%match%/NetworkShareMounter-%match%((([a-z]|[A-Z])+){0,}).dmg</string>
                 <key>result_output_var_name</key>
                 <string>match2</string>
             </dict>
         </dict>
-    	<dict>
+        <dict>
             <key>Processor</key>
             <string>URLDownloader</string>
             <key>Arguments</key>
             <dict>
                 <key>url</key>
-                <string>https://gitlab.rrze.fau.de/api/v4/projects/506/packages/generic/networksharemounter/%RELEASE_CHANNEL%-%match%/NetworkShareMounter%match2%.dmg</string>
+                <string>https://gitlab.rrze.fau.de/api/v4/projects/506/packages/generic/networksharemounter/%RELEASE_CHANNEL%-%match%/NetworkShareMounter-%match%%match2%.dmg</string>
             </dict>
         </dict>
         <dict>
