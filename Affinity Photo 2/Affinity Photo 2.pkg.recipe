@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Description</key>
+    <string>Downloads the current release version of Affintiy Photo and builds a package.</string>
+    <key>Identifier</key>
+    <string>com.github.faumac.pkg.AffinityPhoto2</string>
+    <key>Input</key>
+    <dict>
+        <key>NAME</key>
+        <string>Affinity Photo 2</string>
+        <key>PRODUCT</key>
+        <string>photo</string> <!-- photo, designer, publisher -->
+        <!-- Script parameter -->
+        <key>LICENSE_KEY</key>
+        <string></string>
+        <key>registrationTo</key>
+        <string></string>
+        <key>signature</key>
+        <string></string>
+        <key>userCount</key>
+        <string></string>
+        <key>disableCheckForUpdates</key>
+        <string>false</string> <!-- true / false -->
+        <key>disableCrashReports</key>
+        <string>false</string> <!-- true / false -->
+        <key>disableEULA</key>
+        <string>false</string> <!-- true / false -->
+        <key>disableRegistration</key>
+        <string>false</string> <!-- true / false -->
+    </dict>
+    <key>ParentRecipe</key>
+    <string>com.github.faumac.download.AffinityPhoto2</string>
+    <key>MinimumVersion</key>
+    <string>1.0.1</string>
+    <key>Process</key>
+    <array>
+        <dict>
+            <key>Processor</key>
+            <string>PlistReader</string>
+            <key>Arguments</key>
+            <dict>
+                <key>info_path</key>
+                <string>%RECIPE_CACHE_DIR%/downloads/%NAME%.app/Contents/Info.plist</string>
+                <key>plist_keys</key>
+                <dict>
+                    <key>CFBundleShortVersionString</key>
+                    <string>version</string>
+                    <key>CFBundleIdentifier</key>
+                    <string>pkg_id</string>
+                </dict>
+            </dict>
+        </dict>
+        <dict>
+            <key>Processor</key>
+            <string>PkgRootCreator</string>
+            <key>Arguments</key>
+            <dict>
+                <key>pkgroot</key>
+                <string>%RECIPE_CACHE_DIR%/scripts</string>
+                <key>pkgdirs</key>
+                <dict/>
+            </dict>
+        </dict>
+        <dict>
+            <key>Processor</key>
+            <string>PkgRootCreator</string>
+            <key>Arguments</key>
+            <dict>
+                <key>pkgroot</key>
+                <string>%RECIPE_CACHE_DIR%/pkgroot</string>
+                <key>pkgdirs</key>
+                <dict>
+                    <key>Applications</key>
+                    <string>0775</string>
+                </dict>
+            </dict>
+        </dict>
+        <dict>
+            <key>Processor</key>
+            <string>Copier</string>
+            <key>Arguments</key>
+            <dict>
+                <key>source_path</key>
+                <string>%RECIPE_CACHE_DIR%/downloads/%NAME%.app</string>
+                <key>destination_path</key>
+                <string>%pkgroot%/Applications/%NAME%.app</string>
+            </dict>
+        </dict>
+        <dict>
+            <key>Processor</key>
+            <string>FileCreator</string>
+            <key>Arguments</key>
+            <dict>
+                <key>file_content</key>
+                <string>#!/bin/bash
+####################################
+## Affinity v2 universal activation
+####################################
+
+# Set variables
+## License file
+licenseFile="/Library/Application Support/Serif/Affinity2.defaults"
+## Affinity license information
+photoProductKey="%LICENSE_KEY%"
+designerProductKey="%LICENSE_KEY%"
+publisherProductKey="%LICENSE_KEY%"
+registrationTo="%registrationTo%"
+signature="%signature%"
+userCount="%userCount%"
+## Affinity product settings 
+disableCheckForUpdates="%disableCheckForUpdates%"
+disableCrashReports="%disableCrashReports%"
+disableEULA="%disableEULA%"
+disableRegistration="%disableRegistration%"
+
+# Check if the application support folder and Affinity licence file exists - if not create it
+if [[ -e "$licenseFile" ]]; then
+    currentSignature=`grep -o '"signature": "[^"]*' $licenseFile  | grep -o '[^"]*$'`
+    if [[ "$currentSignature" !=  "$signature" ]]; then
+        echo "license file not matching - remove it"
+        rm "$licenseFile"
+    else
+        echo "matching license file exists"
+    fi
+fi
+if [[ ! -e "$licenseFile" ]]; then
+    mkdir -p "/Library/Application Support/Serif"
+    touch "$licenseFile"
+    chmod 755 "$licenseFile"
+
+
+    # Create license file
+    if [[ -f "$licenseFile" ]]; then
+        cat &gt;"$licenseFile" &lt;&lt;EOF
+{
+    "designerProductKey": "${designerProductKey}",
+    "disableCheckForUpdates": ${disableCheckForUpdates},
+    "disableCrashReports": ${disableCrashReports},
+    "disableEULA": ${disableEULA},
+    "disableRegistration": ${disableRegistration},
+    "licensedTo": "${registrationTo}",
+    "photoProductKey": "${photoProductKey}",
+    "publisherProductKey": "${publisherProductKey}",
+    "signature": "${signature}",
+    "userCount": ${userCount}
+}
+EOF
+    fi
+fi
+
+exit 0</string>
+                <key>file_mode</key>
+                <string>0755</string>
+                <key>file_path</key>
+                <string>%RECIPE_CACHE_DIR%/scripts/postinstall</string>
+            </dict>
+        </dict>
+        <dict>
+            <key>Processor</key>
+            <string>PkgCreator</string>
+            <key>Arguments</key>
+            <dict>
+                <key>pkg_request</key>
+                <dict>
+                    <key>pkgname</key>
+                    <string>%NAME%-%version%</string>
+                    <key>id</key>
+                    <string>%pkg_id%</string>
+                    <key>version</key>
+                    <string>%version%</string>
+                    <key>scripts</key>
+                    <string>%RECIPE_CACHE_DIR%/scripts</string>
+                    <key>options</key>
+                    <string>purge_ds_store</string>
+                    <key>chown</key>
+                    <array>
+                        <dict>
+                            <key>path</key>
+                            <string>Applications</string>
+                            <key>user</key>
+                            <string>root</string>
+                            <key>group</key>
+                            <string>admin</string>
+                        </dict>
+                    </array>
+                </dict>
+            </dict>
+        </dict>
+    </array>
+</dict>
+</plist>
