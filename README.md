@@ -1,3 +1,4 @@
 # faumac-recipes
 
-Public AutoPkg recipes anyone can use.
+Public FAUmac AutoPkg recipes anyone can use.
+
