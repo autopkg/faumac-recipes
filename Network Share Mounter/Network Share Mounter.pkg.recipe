@@ -66,8 +66,6 @@
                     <string>de.fau.rrze.networkShareMounter</string>
                     <key>version</key>
                     <string>%version%</string>
-                    <key>scripts</key>
-                    <string>Network Share Mounter Scripts</string>
                     <key>options</key>
                     <string>purge_ds_store</string>
                     <key>chown</key>

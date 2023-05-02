@@ -1,5 +1,0 @@
-#!/bin/bash
-## Network Share Mounter - Postinstall script
-
-# quit Network Share Mounter applications
-osascript -e 'tell application "Network Share Mounter" to quit'
