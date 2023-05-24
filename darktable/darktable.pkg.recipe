@@ -10,6 +10,8 @@
     <dict>
         <key>NAME</key>
         <string>darktable</string>
+	<key>ARCH</key>
+        <string>arm64</string> <!--Use x86_64 for Intel based Macs-->
     </dict>
     <key>ParentRecipe</key>
     <string>com.github.faumac.download.darktable</string>
@@ -60,11 +62,11 @@
                 <dict>
                     <key>pkgname</key>
                     <string>%NAME%-%ARCH%-%version%</string>
-					<key>id</key>
-					<string>org.darktable</string>
+		    <key>id</key>
+		    <string>org.darktable</string>
                     <key>version</key>
                     <string>%version%</string>
-					<key>options</key>
+		    <key>options</key>
                     <string>purge_ds_store</string>
                     <key>chown</key>
                     <array>
