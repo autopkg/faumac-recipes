@@ -9,7 +9,7 @@
 	<key>Input</key>
 	<dict>
 		<key>NAME</key>
-		<string>Sourcetree</string>
+		<string>SourceTree</string>
 	</dict>
 	<key>ParentRecipe</key>
 	<string>com.github.faumac.download.Sourcetree</string>
@@ -37,9 +37,9 @@
 			<key>Arguments</key>
 			<dict>
 				<key>source_path</key>
-				<string>%RECIPE_CACHE_DIR%/%NAME%/Sourcetree.app</string>
+				<string>%RECIPE_CACHE_DIR%/%NAME%/SourceTree.app</string>
 				<key>destination_path</key>
-				<string>%pkgroot%/Applications/Sourcetree.app</string>
+				<string>%pkgroot%/Applications/SourceTree.app</string>
 			</dict>
 		</dict>
 		<dict>
@@ -50,7 +50,7 @@
 			<key>Arguments</key>
 			<dict>
 				<key>input_plist_path</key>
-				<string>%pkgroot%/Applications/Sourcetree.app/Contents/Info.plist</string>
+				<string>%pkgroot%/Applications/SourceTree.app/Contents/Info.plist</string>
 				<key>plist_version_key</key>
 				<string>CFBundleShortVersionString</string>
 			</dict>
@@ -67,7 +67,7 @@
 					<key>version</key>
 					<string>%version%</string>
 					<key>id</key>
-					<string>com.torusknot.SourcetreeNotMAS</string>
+					<string>com.torusknot.SourceTreeNotMAS</string>
 					<key>options</key>
 					<string>purge_ds_store</string>
 					<key>chown</key>
