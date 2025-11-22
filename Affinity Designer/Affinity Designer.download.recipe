@@ -30,6 +30,10 @@
       </dict>
       <dict>
         <key>Processor</key>
+        <string>EndOfCheckPhase</string>
+      </dict>
+      <dict>
+        <key>Processor</key>
         <string>Unarchiver</string>
         <key>Arguments</key>
         <dict>
@@ -38,10 +42,6 @@
             <key>destination_path</key>
           <string>%RECIPE_CACHE_DIR%/downloads</string>
         </dict>
-      </dict>
-      <dict>
-        <key>Processor</key>
-        <string>EndOfCheckPhase</string>
       </dict>
       <dict>
      <key>Processor</key>
